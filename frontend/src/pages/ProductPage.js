@@ -1,12 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
-import data from "../data";
+
+
 
 function ProductPage(props) {
-  const product = data.products.find(
-    (product) => product._id === props.match.params.id
-  );
+
+  const getProduct = async () => {
+    const products = await fetch("http://localhost:5000/api/products");
+    const product = products.find(
+      (product) => product._id === props.match.params.id
+    );
+    return product;
+  };
+
+  
+ const product = getProduct();
 
   if (!product) {
     return <div>Product not found</div>;
@@ -49,7 +58,7 @@ function ProductPage(props) {
                     {product.countInStock > 0 ? (
                       <span className='success'>In Stock</span>
                     ) : (
-                      <span className='error'>Unavailable</span>
+                      <span className='danger'>Unavailable</span>
                     )}
                   </div>
                 </div>
