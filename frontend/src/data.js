@@ -10,6 +10,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: "Hight quality",
+      countInStock: 11,
     },
     {
       _id: "2",
@@ -21,6 +22,7 @@ const data = {
       rating: 4.7,
       numReviews: 10,
       description: "Hight quality",
+      countInStock: 1,
     },
     {
       _id: "3",
@@ -32,6 +34,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: "Hight quality",
+      countInStock: 0,
     },
   ],
 };
