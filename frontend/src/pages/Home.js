@@ -13,7 +13,7 @@ function Home() {
   const getProducts = async() => {
     setLoading(true);
     try {
-      const { data } = await axios.get(url);
+      const {data} = await axios.get(url);
       if (data) setProducts(data);
     } catch (error) {
       setError(error.message)
