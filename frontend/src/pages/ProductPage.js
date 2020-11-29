@@ -77,7 +77,7 @@ function ProductPage(props) {
                   {product.countInStock > 0 && (
                     <>
                     <li>
-                      <div class="row">
+                      <div className="row">
                         <div></div>
                         <div>
                           <select name="" id="" value={qty} onChange={e => setQty(e.target.value)}>
