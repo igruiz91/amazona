@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
@@ -20,7 +20,7 @@ function Cart(props) {
   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-    //delete action
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
@@ -52,7 +52,7 @@ function Cart(props) {
                       value={item.qty}
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.product, Number(e.target.value))
+                          addToCart(item.idProduct, Number(e.target.value))
                         )
                       }
                     >
