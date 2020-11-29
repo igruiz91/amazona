@@ -1,28 +1,33 @@
-import express from 'express'
-import morgan from 'morgan'
-import data from './data.js'
+import express from "express";
+import morgan from "morgan";
+import mongoose from "mongoose";
+import userRouter from "./routes/userRouter.js";
+import productRouter from "./routes/productRouter.js";
 
-const app = express()
+const app = express();
+mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/amazona", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 
 app.use(morgan("dev"));
 
 
-app.get('/api/products', (_, res) => {
-  res.send(data.products)
-})
 
-app.get('/api/products/:id', (req, res) => {
-  const product = data.products.find(p => p._id === req.params.id)
-  if(product) res.send(product)
-  else res.status(404).send({message: 'Product not found'})
-})
-app.get('/', (_, res) => {
-  res.send('Server ready!')
-})
+app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
 
-const port = process.env.PORT || 5000
+app.get("/", (_, res) => {
+  res.send("Server ready!");
+});
 
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
+
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`)
-})
+  console.log(`Server running at http://localhost:${port}`);
+});

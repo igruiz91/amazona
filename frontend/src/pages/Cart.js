@@ -65,7 +65,7 @@ function Cart(props) {
                   <div>
                     <button
                       type='button'
-                      onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() => removeFromCartHandler(item.idProduct)}
                     >
                       Delete
                     </button>
