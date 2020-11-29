@@ -31,7 +31,7 @@ function App() {
         <main>
           <Route exact path='/' component={Home} />
           <Route path='/product/:id?' component={ProductPage}></Route>
-          <Route path='/cart/:id' component={Cart}></Route>
+          <Route path='/cart/:id?' component={Cart}></Route>
         </main>
         <footer className='row center'>All right reserved</footer>
       </div>

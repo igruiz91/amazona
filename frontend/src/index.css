@@ -65,7 +65,7 @@ a.brand {
   font-size: 3rem;
   font-weight: bold;
 }
-.badge{
+.badge {
   background-color: #f02020;
   color: white;
   border-radius: 50%;
@@ -91,6 +91,9 @@ a.brand {
 .col-2 {
   flex: 2 1 50rem;
 }
+.min-30 {
+  min-width: 30rem;
+}
 ul {
   padding: 0;
   margin: 0;
@@ -100,7 +103,9 @@ li {
   margin-top: 1rem;
 }
 
-input, select, textarea, 
+input,
+select,
+textarea,
 button {
   padding: 1rem;
   border-radius: 0.5rem;
@@ -111,11 +116,13 @@ button {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button{
+button {
   background-color: #f8f8f8;
   cursor: pointer;
 }
-input:hover, select:hover, textarea:hover, 
+input:hover,
+select:hover,
+textarea:hover,
 button:hover {
   border: 0.1rem #404040 solid;
 }
@@ -132,6 +139,11 @@ img {
   border-radius: 0.5rem;
   max-height: 60rem;
 }
+img.small {
+  max-width: 5rem;
+  width: 100%;
+}
+
 img.medium {
   max-width: 29rem;
   width: 100%;
@@ -174,16 +186,16 @@ img.large {
   color: #a02020;
 }
 
-.alert{
+.alert {
   padding: 1rem;
   border: 0.1rem solid transparent;
   border-radius: 0.5rem;
 }
-.alert-info{
+.alert-info {
   color: #2020a0;
   background-color: #e0e0ff;
 }
-.alert-danger{
+.alert-danger {
   color: #a02020;
   background-color: #ffe0e0e0;
 }
