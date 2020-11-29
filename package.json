@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "amazon clone",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
   "devDependencies": {
     "eslint": "^7.14.0",
     "eslint-plugin-react": "^7.21.5"
