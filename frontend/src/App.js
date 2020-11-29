@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 
@@ -19,7 +20,8 @@ function App() {
         </header>
         <main>
           <Route exact path='/' component={Home} />
-          <Route path='/product/:id' component={ProductPage}></Route>
+          <Route path='/product/:id?' component={ProductPage}></Route>
+          <Route path='/cart/:id' component={Cart}></Route>
         </main>
         <footer className='row center'>All right reserved</footer>
       </div>
