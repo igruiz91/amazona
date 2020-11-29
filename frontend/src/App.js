@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
+import Signin from "./pages/Signin";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
         </header>
         <main>
           <Route exact path='/' component={Home} />
+          <Route path='/signin' component={Signin}></Route>
           <Route path='/product/:id?' component={ProductPage}></Route>
           <Route path='/cart/:id?' component={Cart}></Route>
         </main>
