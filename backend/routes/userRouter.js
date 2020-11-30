@@ -20,8 +20,8 @@ userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
-    if(user) {
-      if(bcrypt.compareSync(req.body.password, user.password)) {
+    if (user) {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
         const { _id, name, email, isAdmin } = user;
         res.send({
           _id,
@@ -34,6 +34,26 @@ userRouter.post(
       }
     }
     res.status(401).send({ message: "Invalid email or password" });
+  })
+);
+
+userRouter.post(
+  "/register",
+  expressAsyncHandler(async (req, res) => {
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 8),
+    });
+    const createdUser = await user.save();
+    const { _id, name, email, isAdmin } = createdUser;
+    res.send({
+      _id,
+      name,
+      email,
+      isAdmin,
+      token: generateToken(createdUser),
+    });
   })
 );
 

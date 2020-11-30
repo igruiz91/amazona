@@ -4,6 +4,7 @@ import { signout } from "./actions/userActions";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
+import Register from "./pages/Register";
 import Signin from "./pages/Signin";
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
             {userInfo ? (
               <div className='dropdown'>
                 <Link to='#'>
-                  {userInfo.name} <i className='fa fa-caret-down'></i>{" "}
+                  {userInfo.name} <i className='fa fa-caret-down'></i>
                 </Link>
                 <ul className='dropdown-content'>
                   <Link to='#signout' onClick={signOutHandler}>
@@ -52,6 +53,7 @@ function App() {
         <main>
           <Route exact path='/' component={Home} />
           <Route path='/signin' component={Signin}></Route>
+          <Route path='/register' component={Register}></Route>
           <Route path='/product/:id?' component={ProductPage}></Route>
           <Route path='/cart/:id?' component={Cart}></Route>
         </main>
