@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { signout } from "./actions/userActions";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
+import Payment from "./pages/Payment";
 import ProductPage from "./pages/ProductPage";
 import Register from "./pages/Register";
 import Shipping from "./pages/Shipping";
@@ -56,6 +57,7 @@ function App() {
           <Route path='/signin' component={Signin}></Route>
           <Route path='/register' component={Register}></Route>
           <Route path='/shipping' component={Shipping}></Route>
+          <Route path='/payment' component={Payment}></Route>
           <Route path='/product/:id?' component={ProductPage}></Route>
           <Route path='/cart/:id?' component={Cart}></Route>
         </main>
