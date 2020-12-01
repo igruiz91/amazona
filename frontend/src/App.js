@@ -5,6 +5,7 @@ import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import Register from "./pages/Register";
+import Shipping from "./pages/Shipping";
 import Signin from "./pages/Signin";
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
           <Route exact path='/' component={Home} />
           <Route path='/signin' component={Signin}></Route>
           <Route path='/register' component={Register}></Route>
+          <Route path='/shipping' component={Shipping}></Route>
           <Route path='/product/:id?' component={ProductPage}></Route>
           <Route path='/cart/:id?' component={Cart}></Route>
         </main>
