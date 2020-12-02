@@ -1,9 +1,10 @@
 import express from "express";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import userRouter from "./routes/userRouter.js";
 import productRouter from "./routes/productRouter.js";
-import dotenv from "dotenv";
+import orderRouter from "./routes/orderRouter.js";
 
 dotenv.config()
 const app = express();
@@ -21,12 +22,13 @@ app.use(morgan("dev"));
 
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 app.get("/", (_, res) => {
   res.send("Server ready!");
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(500).send({ message: err.message });
 });
 
