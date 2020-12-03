@@ -1,11 +1,19 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../actions/orderActions";
 import CartItems from "../components/CartItems";
 import CheckoutSteps from "../components/CheckoutSteps";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants";
+import Loading from "../components/Loading";
+import Message from "../components/Message";
 
 function PlaceOrder(props) {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const orderCreate = useSelector(state => state.orderCreate)
   const { shippingAddress, cartItems } = cart;
+  const { loading, error, success, order } = orderCreate;
+
   if (!cart.paymentMethod) {
     props.history.push("/payment");
   }
@@ -19,9 +27,14 @@ function PlaceOrder(props) {
   );
 
   const placeOrderHandler = () => {
-    //dispatch place order
+    dispatch(createOrder({ ...cart, orderItems: cartItems }));
   };
-
+  useEffect(() => {
+    if (success) {
+      props.history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+  }, [success, dispatch, order, props.history]);
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -35,7 +48,7 @@ function PlaceOrder(props) {
                   <strong>Name: </strong> {shippingAddress.fullName}
                   <br />
                   <strong>Address: </strong> {shippingAddress.address},
-                  {shippingAddress.city}, {shippingAddress.postalCode},{" "}
+                  {shippingAddress.city}, {shippingAddress.postalCode},
                   {shippingAddress.country}
                 </p>
               </div>
@@ -98,6 +111,8 @@ function PlaceOrder(props) {
                   Place Order
                 </button>
               </li>
+              {loading && <Loading />}
+              {error && <Message variant='danger'>{error}</Message>}
             </ul>
           </div>
         </div>
