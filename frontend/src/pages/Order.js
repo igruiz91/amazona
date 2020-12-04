@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import Axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { PayPalButton } from 'react-paypal-button-v2'
 import { detailsOrder } from "../actions/orderActions";
 import CartItems from "../components/CartItems";
 import Loading from "../components/Loading";
@@ -10,11 +12,35 @@ function Order(props) {
   const orderId = props.match.params.id;
   const orderDetails = useSelector((state) => state.orderDetails);
   const { loading, error, order } = orderDetails;
-
+  const [sdkReady, setSdkReady] = useState(false)
   useEffect(() => {
-    dispatch(detailsOrder(orderId));
-  }, [orderId, dispatch]);
-
+    const addPayPalScript = async () => {
+      const {data } = await Axios.get('/api/config/paypal')
+      const script = document.createElement('script')
+      script.type='text/javascript';
+      script.src  = `https://www.paypal.com/sdk/js?client-id=${data}`
+      script.async=true;
+      script.onload = () => {
+        setSdkReady(true)
+      }
+      document.body.appendChild(script)
+    }
+    if(!order._id){
+      dispatch(detailsOrder(orderId));
+    }else{
+      if(!order.isPaid){
+        if(!window.paypal){
+          addPayPalScript();
+        }else{
+          setSdkReady(true)
+        }
+      }
+    }
+  }, [orderId, order, sdkReady, dispatch]);
+  const successPaymentHandler = () => {
+    //todo
+  };
+  
   return loading ? (
     <Loading />
   ) : error ? (
@@ -100,6 +126,13 @@ function Order(props) {
                   <div>${order.totalPrice}</div>
                 </div>
               </li>
+              {!order.paid &&  (
+                <li>
+                  {!sdkReady ? <Loading /> : (
+                    <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler}/>
+                  )}
+                </li>
+              )}
             </ul>
           </div>
         </div>

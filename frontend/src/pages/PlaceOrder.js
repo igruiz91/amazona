@@ -8,33 +8,30 @@ import Loading from "../components/Loading";
 import Message from "../components/Message";
 
 function PlaceOrder(props) {
-  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const orderCreate = useSelector(state => state.orderCreate)
-  const { shippingAddress, cartItems } = cart;
-  const { loading, error, success, order } = orderCreate;
-
   if (!cart.paymentMethod) {
     props.history.push("/payment");
   }
-
-  const toPrice = (num) => Number(num.toFixed(2));
-  cart.itemsPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
-  cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
-  cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 10;
-  cart.totalPrice = toPrice(
-    cart.itemsPrice + cart.taxPrice + cart.shippingPrice
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { loading, success, error, order } = orderCreate;
+  const toPrice = (num) => Number(num.toFixed(2)); // 5.123 => "5.12" => 5.12
+  cart.itemsPrice = toPrice(
+    cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0)
   );
-
+  cart.shippingPrice = cart.itemsPrice > 100 ? toPrice(0) : toPrice(10);
+  cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
+  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+  const dispatch = useDispatch();
   const placeOrderHandler = () => {
-    dispatch(createOrder({ ...cart, orderItems: cartItems }));
+    dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
   };
+
   useEffect(() => {
     if (success) {
       props.history.push(`/order/${order._id}`);
       dispatch({ type: ORDER_CREATE_RESET });
     }
-  }, [success, dispatch, order, props.history]);
+  }, [dispatch, order, props.history, success]);
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -45,11 +42,10 @@ function PlaceOrder(props) {
               <div className='card card-body'>
                 <h2>Shipping</h2>
                 <p>
-                  <strong>Name: </strong> {shippingAddress.fullName}
-                  <br />
-                  <strong>Address: </strong> {shippingAddress.address},
-                  {shippingAddress.city}, {shippingAddress.postalCode},
-                  {shippingAddress.country}
+                  <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
+                  <strong>Address: </strong> {cart.shippingAddress.address},
+                  {cart.shippingAddress.city}, {cart.shippingAddress.postalCode}
+                  ,{cart.shippingAddress.country}
                 </p>
               </div>
             </li>
@@ -64,7 +60,9 @@ function PlaceOrder(props) {
             <li>
               <div className='card card-body'>
                 <h2>Order items</h2>
-                <CartItems cartItems={cartItems} />
+                <ul>
+                  <CartItems cartItems={cart.cartItems} />
+                </ul>
               </div>
             </li>
           </ul>
@@ -103,10 +101,10 @@ function PlaceOrder(props) {
               </li>
               <li>
                 <button
-                  className='primary block'
                   type='button'
                   onClick={placeOrderHandler}
-                  disabled={cartItems.length === 0}
+                  className='primary block'
+                  disabled={cart.cartItems.length === 0}
                 >
                   Place Order
                 </button>
