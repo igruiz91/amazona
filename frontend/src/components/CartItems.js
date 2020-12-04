@@ -11,7 +11,7 @@ function CartItems({ cartItems, editable }) {
   };
 
   return (
-    <>  
+    <ul>  
     {cartItems.map((item) => (
         <li key={item.product}>
           <div className='row'>
@@ -53,7 +53,7 @@ function CartItems({ cartItems, editable }) {
           </div>
         </li>
       ))}
-      </>
+      </ul>
   );
 }
 
