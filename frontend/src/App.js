@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { signout } from "./actions/userActions";
+import PrivateRoute from "./components/PrivateRoute";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Order from "./pages/Order";
@@ -18,12 +19,12 @@ function App() {
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const signOutHandler = () => {
-    dispatch(signout())
+    dispatch(signout());
   };
-  
+
   return (
     <Router>
       <div className='grid-container'>
@@ -62,6 +63,27 @@ function App() {
             ) : (
               <Link to='/signin'>Sign In</Link>
             )}
+            {userInfo && userInfo.isAdmin && (
+              <div className='dropdown'>
+                <Link to='#admin'>
+                  Admin <i className='fa fa-caret-down'></i>
+                </Link>
+                <ul className='dropdown-content'>
+                  <li>
+                    <Link to='/dashboard'>Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link to='/productlist'>Products</Link>
+                  </li>
+                  <li>
+                    <Link to='/orderlist'>Orders</Link>
+                  </li>
+                  <li>
+                    <Link to='/userlist'>Users</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </header>
         <main>
@@ -75,7 +97,7 @@ function App() {
           <Route path='/payment' component={Payment}></Route>
           <Route path='/placeorder' component={PlaceOrder}></Route>
           <Route path='/product/:id' component={ProductPage}></Route>
-          <Route path='/profile' component={Profile}></Route>
+          <PrivateRoute path='/profile' component={Profile}></PrivateRoute>
         </main>
         <footer className='row center'>All right reserved</footer>
       </div>
