@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { addToCart, removeFromCart } from "../actions/cartActions";
+import { addToCart } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
+import CartItems from "../components/CartItems";
 
 function Cart(props) {
   const productId = props.match.params.id;
@@ -19,10 +20,6 @@ function Cart(props) {
     }
   }, [dispatch, productId, qty]);
 
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
-  };
-
   const checkoutHandler = () => {
     props.history.push(`/signin?redirect=shipping`);
   };
@@ -37,43 +34,7 @@ function Cart(props) {
             Your Amazona Cart is empty. <Link to='/'>Continue Shopping.</Link>
           </Message>
         ) : (
-          <ul>
-            {cartItems.map((item) => (
-              <li key={item.product}>
-                <div className='row'>
-                  <div>
-                    <img src={item.image} alt={item.name} className='small' />
-                  </div>
-                  <div className='min-30'>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
-                  </div>
-                  <div>
-                    <select
-                      value={item.qty}
-                      onChange={(e) =>
-                        dispatch(
-                          addToCart(item.idProduct, Number(e.target.value))
-                        )
-                      }
-                    >
-                      {[...Array(item.countInStock).keys()].map((x) => (
-                        <option key={x + 1}>{x + 1}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>${item.price}</div>
-                  <div>
-                    <button
-                      type='button'
-                      onClick={() => removeFromCartHandler(item.idProduct)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <CartItems cartItems={cartItems} editable />
         )}
       </div>
       <div className='col-1'>
